@@ -29,6 +29,7 @@ RUN apt install protobuf-compiler libprotobuf-dev -y
 RUN pip install onnx
 
 # pytorch
+RUN apt install cmake -y
 RUN pip install git+https://github.com/pytorch/pytorch
 RUN pip install torchvision
 
