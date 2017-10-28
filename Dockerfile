@@ -32,7 +32,7 @@ RUN cd /workspace/nnvm/tvm/topi/python; python setup.py install --user
 
 # onnx
 RUN apt install protobuf-compiler libprotobuf-dev -y
-RUN pip install onnx
+RUN pip install onnx==0.2.0
 #RUN cd workspace; git clone --recursive https://github.com/onnx/onnx.git
 #RUN cd /workspace/onnx; \
 #  git checkout tags/v0.2; \
@@ -44,7 +44,8 @@ RUN apt install cmake -y
 RUN cd workspace; \
   git clone https://github.com/xianyi/OpenBLAS
 RUN cd /workspace/OpenBLAS; \
-  make NO_AFFINITY=1 USE_OPENMP=1; make PREFIX=/opt/OpenBLAS install
+  make NO_AFFINITY=1 USE_OPENMP=1 USE_THREAD=1
+RUN cd /workspace/OpenBLAS; make PREFIX=/opt/OpenBLAS install
 RUN export LD_LIBRARY_PATH=/opt/OpenBLAS/lib=$LD_LIBRARY_PATH; \
   echo 'export LD_LIBRARY_PATH=/opt/OpenBLAS/lib:$LD_LIBRARY_PATH;' >> ~/.bashrc
 RUN pip install pyyaml
