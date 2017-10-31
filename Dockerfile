@@ -25,8 +25,8 @@ RUN cd workspace/nnvm/python; python setup.py install --user
 RUN apt install libtinfo-dev zlib1g-dev llvm -y
 COPY CMakeLists.txt /workspace/nnvm/tvm/
 RUN cd /workspace/nnvm/tvm; make
-RUN export PYTHONPATH=/path/to/tvm/python:/path/to/tvm/topi/python:${PYTHONPATH}; \
-  echo 'export PYTHONPATH=/path/to/tvm/python:/path/to/tvm/topi/python:${PYTHONPATH}' >> ~/.bashrc
+RUN export PYTHONPATH=/workspace/nnvm/tvm/python:/workspace/nnvm/tvm/topi/python:${PYTHONPATH}; \
+  echo 'export PYTHONPATH=/workspace/nnvm/tvm/python:/workspace/nnvm/tvm/topi/python:${PYTHONPATH}' >> ~/.bashrc
 RUN cd /workspace/nnvm/tvm/python; python setup.py install --user
 RUN cd /workspace/nnvm/tvm/topi/python; python setup.py install --user
 
@@ -40,19 +40,19 @@ RUN pip install onnx==0.2.0
 
 # pytorch
 RUN apt update
-RUN apt install cmake -y
-RUN cd workspace; \
-  git clone https://github.com/xianyi/OpenBLAS
-RUN cd /workspace/OpenBLAS; \
-  make NO_AFFINITY=1 USE_OPENMP=1 USE_THREAD=1
-RUN cd /workspace/OpenBLAS; make PREFIX=/opt/OpenBLAS install
-RUN export LD_LIBRARY_PATH=/opt/OpenBLAS/lib=$LD_LIBRARY_PATH; \
-  echo 'export LD_LIBRARY_PATH=/opt/OpenBLAS/lib:$LD_LIBRARY_PATH;' >> ~/.bashrc
+RUN apt install cmake libblas-dev liblapack-dev -y
+#RUN cd workspace; \
+#  git clone https://github.com/xianyi/OpenBLAS
+#RUN cd /workspace/OpenBLAS; \
+#  make NO_AFFINITY=1 USE_OPENMP=1 USE_THREAD=1
+#RUN cd /workspace/OpenBLAS; make PREFIX=/opt/OpenBLAS install
+#RUN export LD_LIBRARY_PATH=/opt/OpenBLAS/lib=$LD_LIBRARY_PATH; \
+#  echo 'export LD_LIBRARY_PATH=/opt/OpenBLAS/lib:$LD_LIBRARY_PATH;' >> ~/.bashrc
 RUN pip install pyyaml
 RUN cd workspace; \
   git clone --recursive https://github.com/pytorch/pytorch
 RUN cd /workspace/pytorch; \
-  export CMAKE_LIBRARY_PATH=/opt/OpenBLAS/include:/opt/OpenBLAS/lib:$CMAKE_LIBRARY_PATH; \
+#  export CMAKE_LIBRARY_PATH=/opt/OpenBLAS/include:/opt/OpenBLAS/lib:$CMAKE_LIBRARY_PATH; \
   python setup.py install
 RUN pip install torchvision
 
